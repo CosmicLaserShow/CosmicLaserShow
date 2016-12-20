@@ -1,10 +1,11 @@
 import math
 
 MM = 1.
+CM = 10 * MM
 M = 1000 * MM
 
 NS = 1.
-MS = 10**3 * NS
+MS = 10**6 * NS
 S = 10**9 * NS
 
 NANOSECOND = NS

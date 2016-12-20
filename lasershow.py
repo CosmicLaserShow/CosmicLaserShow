@@ -9,34 +9,36 @@
 from globals import *
 import time
 import hitconverter
+import drivers
 
-#import DataAcquisition
 
-class CosmicLaserShow:
+runtime = 10*SECOND #Run for 10 seconds, nice test
+converter = hitconverter.HitConverter(show)
+acquisition = drivers.DataAcquisition()
 
-    def __init__(self):
-        hitlist = []
+starting_time = time.time()
+ending_time = starting_time + (runtime / SECOND)
 
-    def receiveHits(hits):
-        hitlist = hits
+expected_runtime = 1 #1 second
+cycle_duration = 0
+run = 0
+while(time.time() < ending_time):
+     run += 1
+     sleeptime = expected_runtime - cycle_duration
+     time.sleep(sleeptime)
 
-    def mainLoop(self, runtime):
-        starting_time = time.time()
-        ending_time = starting_time + (runtime / SECOND)
+     cycle_starttime = time.time() #Benchmark how long it took (roughly, in ms)
+     #ALL THE WORK TO BE DONE IN A CYCLE IS DONE HERE
 
-        expected_runtime = 1 #1 second
-        cycle_duration = 0
-        run = 0
-        while(time.time() < ending_time):
-            run += 1
-            sleeptime = expected_runtime - cycle_duration
-            time.sleep(sleeptime)
+     print("This is run" + str(run))
 
-            cycle_starttime = time.time() #Benchmark how long it took (roughly, in ms)
-            #ALL THE WORK TO BE DONE IN A CYCLE IS DONE HERE
+     pulses = acquisition.getPulses() #Check all pulses received from data by now
+     print(pulses)
+     converter.addPulses(pulses)  
+     hits = converter.processPulses()
+     print(hits)
+     #ALL THE WORK TO BE DONE IN A CYCLE ENDS HERE
+     cycle_endtime = time.time() #End the benchmark
+     cycle_duration = cycle_starttime - cycle_endtime
 
-            print("This is run" + str(run))
-
-            #ALL THE WORK TO BE DONE IN A CYCLE ENDS HERE
-            cycle_endtime = time.time() #End the benchmark
-            cycle_duration = cycle_starttime - cycle_endtime
+print("Program successfully executed!)
