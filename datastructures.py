@@ -25,6 +25,14 @@ class Pulse:
     def __init__(self,id_,time_):
         self.id = id_
         self.time = time_
+        
+        #SQL values for matching  
+        self.GPSTime = 0
+        self.Nano = 0
+
+    def setTimings(self, t1, t2):
+        self.GPSTime = t1
+        self.Nano = t2
 
 class Light:
     def __init__(self,hit):

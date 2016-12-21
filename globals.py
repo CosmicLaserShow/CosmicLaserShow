@@ -17,6 +17,7 @@ SPEED = (2./3.) * SPEED_OF_LIGHT
 
 LENGTH = 500. * MM
 
+#PMT_COORDS = [(0., 0.), (LENGTH, 0.), (LENGTH, LENGTH)]
 PMT_COORDS = [(0., 0.), (LENGTH, 0.), (0., LENGTH), (LENGTH, LENGTH)]
 
 def distance(p1, p2):

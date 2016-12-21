@@ -12,6 +12,7 @@ def chisquared(vars, alignm, data, eps_data = None):
 
 def HitMinimizer(hit, hit_errors = None, start_hit = [globals.LENGTH * 0.5, globals.LENGTH * 0.5]):
     tlist = hit.pulses
+    
     timelist = [ t.time for t in tlist] 
     redtimelist = [ t - min(timelist) for t in timelist]
 
