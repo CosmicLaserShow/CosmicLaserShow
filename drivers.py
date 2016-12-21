@@ -16,7 +16,7 @@ class DataAcquisition:
         self.elapsed = 0
         self.pulselist = []
       
-        self.conn = sqlite3.connect('cosmics.db')
+        self.conn = sqlite3.connect('~/cosmics.db')
         c = self.conn.cursor()
         c.execute("SELECT * FROM Hits")
         for row in c:

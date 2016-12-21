@@ -5,7 +5,7 @@ from minimizer import *
 class HitConverter: 
     def __init__(self):
         self.pmts = len(PMT_COORDS)
-        print(self.pmts)
+        #print(self.pmts)
         self.stream = []
         self.processed = []	
         self.hits = []
