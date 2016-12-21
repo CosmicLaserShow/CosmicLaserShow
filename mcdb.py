@@ -3,15 +3,16 @@ import sqlite3
 import time
 import random
 import mc
+import os
 
-conn = sqlite3.connect('cosmics.db')
+conn = sqlite3.connect(os.path.expanduser("~/cosmics.db"))
 c = conn.cursor()
 c.execute("CREATE TABLE Hits (GPSTime INT, ID INT, Timing INT, Nanoseconds INT)")
 
 starttime = time.time()
 while True:
-    time.sleep(0.1)
-    if not random.randint(0,8) == 1: continue
+    time.sleep(0.01)
+    if not random.randint(0,3) == 1: continue
     pulses = mc.generate()
     print(pulses)
     gpstime = int( (time.time()-starttime)* 1000)

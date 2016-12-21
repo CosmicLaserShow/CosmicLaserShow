@@ -7,6 +7,7 @@ from globals import *
 from datastructures import *
 import numpy
 import mc
+import os
 import sqlite3
 import random
 from matplotlib import pyplot as plt
@@ -15,8 +16,9 @@ class DataAcquisition:
     def __init__(self):
         self.elapsed = 0
         self.pulselist = []
-      
-        self.conn = sqlite3.connect('~/cosmics.db')
+        
+        dbname = os.path.expanduser('~/cosmics.db')
+        self.conn = sqlite3.connect(dbname)
         c = self.conn.cursor()
         c.execute("SELECT * FROM Hits")
         for row in c:
