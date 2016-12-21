@@ -8,7 +8,7 @@ class HitConverter:
         self.steering = lasershow
         self.stream = []
         self.processed = []	
-        self.lastHit = 0
+        self.hits = []
 
     def processPulses(self, currtime):
         grace_time = 1 * MS
@@ -73,7 +73,7 @@ class HitConverter:
             else:
                 break #collection of pulses cannot make a valid hit anymore
                 
-        lasershow.receiveHits(valid_hits)        
+        self.hits = valid_hits  
         return processed_pulses
 
     def __isValid(self, hit):
