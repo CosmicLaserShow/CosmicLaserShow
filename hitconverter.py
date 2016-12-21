@@ -38,7 +38,7 @@ class HitConverter:
 
         processed_pulses = []
         valid_hits = []
-        while len(toProcess) >= self.pmts: #also terminates if more than X pulses don't have a valid hit together
+        while len(toProcess) >= self.pmts:
             successes = [False for _ in range(self.pmts)]
             processed_thisround = [None for _ in range(self.pmts)]
 
@@ -59,14 +59,15 @@ class HitConverter:
                 hit = Hit(processed_thisround)
                 HitMinimizer(hit)
                 print("x= %1.2f y= %1.2f t= %1.2f chisq=%.2f" % (hit.x,hit.y,hit.time,hit.chiSquared))
-                if self.__isValid(hit): valid_hits.append(hit)	
-                processed_pulses += processed_thisround
-                for pulse in processed_thisround:
-                    toProcess.remove(pulse)
-                #we will now try again with the remaining pulses
-            else:
-                break #collection of pulses cannot make a valid hit anymore
-                
+                if self.__isValid(hit): valid_hits.append(hit)
+            
+            #Discard either all pulses of hit or pulses of an incomplete hit	
+            processed_pulses += processed_thisround
+            for pulse in processed_thisround:
+                toProcess.remove(pulse)
+            
+            #we will now try again with the remaining pulses               
+        
         self.hits = valid_hits  
         return processed_pulses
 
