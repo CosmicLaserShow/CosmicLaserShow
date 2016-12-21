@@ -61,7 +61,7 @@ class Main(object):
         if self.config.getboolean('DAQ', 'force_reset_gps'):
             logging.info("Force reset GPS to factory defaults.")
             self.gps.reset_defaults()
-            self.config.set('DAQ', 'force_reset_gps', False)
+            self.config.set('DAQ', 'force_reset_gps', 'False')
 
         if self.config.getboolean('DAQ', 'force_align_adcs'):
             logging.info("Force aligning ADCs.")
@@ -70,7 +70,7 @@ class Main(object):
             #if USE_DEVICE2:
                 #align_adcs = AlignADCs(self.device2)
                 #align_adcs.align()
-            self.config.set('DAQ', 'force_align_adcs', False)
+            self.config.set('DAQ', 'force_align_adcs', 'False')
 
         self.write_config()
 
