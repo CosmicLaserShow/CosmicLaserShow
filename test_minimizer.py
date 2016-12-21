@@ -3,6 +3,7 @@ import minimizer
 import datastructures
 import mc
 import globals
+import time
 
 # mc test
 mcdata = mc.generate()
@@ -18,7 +19,10 @@ start_hit = [globals.LENGTH/4.0, globals.LENGTH/4.0]
 meas_puls = [datastructures.Pulse(i,mcdata[i]) for i in range(len(mcdata))]
 meas_hit  = datastructures.Hit(meas_puls)
 
+start = time.time()
 minimizer.HitMinimizer(meas_hit) #, meas_errs, start_hit)
+eind = time.time()
+print 'Minimizer lasted %f seconds' % (eind - start)
 
 print('fit results:')
 print('x_start = %.5f; x = %.5f +/- %.5f' % (round(start_hit[0],5),round(meas_hit.x,5),round(meas_hit.x_err,5)))

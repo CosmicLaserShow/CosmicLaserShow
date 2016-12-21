@@ -1,0 +1,39 @@
+---
+- name: ensure /opt/pysparc directory exists
+  file: path=/opt/pysparc state=directory
+        owner=hisparc group=hisparc mode=2775
+  sudo: yes
+
+- name: set default group write ACLs on /opt/pysparc
+  acl: name=/opt/pysparc default=yes etype=group permissions=rwx state=present
+  sudo: yes
+
+- name: checkout pysparc in /opt/pysparc
+  git: repo=https://github.com/HiSPARC/pysparc.git dest=/opt/pysparc
+       version=master update=yes force=no
+  register: result
+  notify: restart pysparc
+  tags: pysparc
+
+- name: install pysparc package
+  command: /usr/bin/python setup.py develop chdir=/opt/pysparc
+  sudo: yes
+  when: result|changed
+  tags: pysparc
+
+- name: Configure supervisor to start PySPARC
+  copy: src=supervisord-pysparc.conf dest=/etc/supervisor/conf.d/pysparc.conf
+  sudo: yes
+  notify: restart supervisor
+  tags: pysparc
+
+- name: ensure redis-server is running
+  service: name=redis-server state=started
+  sudo: yes
+  notify: restart pysparc
+  tags: pysparc
+
+- name: ensure pysparc is running
+  supervisorctl: name=pysparc state=started
+  when: inventory_hostname != "vagrant"
+  tags: pysparc
