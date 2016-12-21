@@ -18,7 +18,6 @@ converter = hitconverter.HitConverter()
 acquisition = drivers.DataAcquisition()
 grid = drivers.LaserGrid()
 
-
 starting_time = time.time()
 ending_time = starting_time + (runtime / SECOND)
 
@@ -38,7 +37,8 @@ while(time.time() < ending_time):
      print("This is run" + str(run))
 
      pulses = acquisition.getPulses() #Check all pulses received from data by now
-     #print(pulses)
+     print("Retrieved %d pulses during this run" % len(pulses))
+
      converter.addPulses(pulses)  
      hits = converter.processPulses()
 

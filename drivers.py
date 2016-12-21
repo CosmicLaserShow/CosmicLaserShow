@@ -7,28 +7,35 @@ from globals import *
 from datastructures import *
 import numpy
 import mc
+import sqlite3
 import random
 from matplotlib import pyplot as plt
 
 class DataAcquisition:
     def __init__(self):
         self.elapsed = 0
+        self.pulselist = []
+      
+        self.conn = sqlite3.connect('cosmics.db')
+        c = self.conn.cursor()
+        c.execute("SELECT * FROM Hits")
+        for row in c:
+            if row[0] > self.elapsed: self.elapsed = row[0]      
+
+    def syncDatabase(self):
+        c = self.conn.cursor()
+        c.execute("SELECT * FROM Hits WHERE GPSTime>%d" % self.elapsed)
+        for row in c:
+            #print(row)
+            if row[0] > self.elapsed: self.elapsed = row[0]         
+            newpulse = Pulse(row[2],row[3])
+            newpulse.setTimings(row[0],row[1])
+            self.pulselist.append(newpulse)
 
     def getPulses(self):
-        pulses = []
-        #Create pulses at random from 'mc' generator        
-        npulses = random.randint(0,3) #0,1,2 or 3 pulse quartets
-        times = []
-        for i in range(npulses): 
-            times = mc.generate()
-            offset = random.randint(50,150) * (i+1)
-            for j in range(len(times)): 
-                time = times[j] + self.elapsed + offset
-                pulses.append(Pulse(j,time))
-
-        self.elapsed += 1*SECOND
-        return pulses
-
+        self.pulselist = []
+        self.syncDatabase()
+        return self.pulselist
 
 class LaserGrid:
     def __init__(self):
@@ -47,7 +54,11 @@ class LaserGrid:
 
     def showGrid(self):
         plt.scatter(self.xs,self.ys)
-        print(self.xs)
-        print(self.ys)
         self.fig.canvas.draw()
+        somegrid = [[0]*10 for _ in range(10)]
+        for i in range(len(self.xs)):
+           somegrid[self.ys[i]][self.xs[i]] = 1
+        for list in somegrid: print(list)
+
+
 
