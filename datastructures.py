@@ -27,10 +27,9 @@ class Pulse:
         self.time = time_
 
 class Light:
-    def __init__(self,x_,y_,time_):
-        self.x = x_
-        self.y = y_
-        self.time = time_
+    def __init__(self,hit):
+        self.x = int( 10*hit.x / LENGTH)
+        self.y = int( 10*hit.y / LENGTH) 
 
 class Track:
     def __init__(self):
