@@ -28,7 +28,7 @@ USE_DEVICE2 = True
 class Main(object):
 
     def __init__(self):
-        self.config = ConfigParser.ConfigParser()
+        self.config = configparser.ConfigParser()
         #try:
         self.device = HiSPARCIII('FTKBO7Y')
         if USE_DEVICE2:
