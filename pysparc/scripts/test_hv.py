@@ -21,7 +21,7 @@ SYSTEM_CONFIGFILE = pkg_resources.resource_filename('pysparc', 'config.ini')
 CONFIGFILE = os.path.expanduser('~/.pysparc')
 ALL_CONFIG_FILES = [SYSTEM_CONFIGFILE]#, CONFIGFILE]
 DATAFILE = 'hisparc.h5'
-DBFILE = os.path.expanduser('~/CosmicLaserShow.db')
+DBFILE = os.path.expanduser('~/cosmics.db')
 
 USE_DEVICE2 = True
 
