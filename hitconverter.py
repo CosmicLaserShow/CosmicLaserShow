@@ -49,7 +49,7 @@ class HitConverter:
                 id = pulse.id
                 if successes[id] == True: continue
                 if GPSTime > 0 and not pulse.GPSTime == GPSTime: continue
-                if Nano > 0 and not abs(pulse.Nano - Nano) < 6: continue
+                if Nano > 0 and not pulse.Nano == Nano: continue
 
                 successes[id] = True
                 processed_thisround[id] = pulse
@@ -58,13 +58,12 @@ class HitConverter:
             if successes == [True] * self.pmts:
                 hit = Hit(processed_thisround)
                 HitMinimizer(hit)
-                print("x= %1.2f y= %1.2f t= %1.2f chisq=%.2f" % (hit.x,hit.y,hit.time,hit.chiSquared))
-                if self.__isValid(hit): valid_hits.append(hit)
-            
-            #Discard either all pulses of hit or pulses of an incomplete hit	
-            processed_pulses += processed_thisround
+                #print("x= %1.2f y= %1.2f t= %1.2f chisq=%.2f" % (hit.x,hit.y,hit.time,hit.chiSquared))
+                if self.__isValid(hit): valid_hits.append(hit) 
+                processed_pulses += processed_thisround
             for pulse in processed_thisround:
-                toProcess.remove(pulse)
+                if pulse in toProcess: toProcess.remove(pulse)
+                
             
             #we will now try again with the remaining pulses               
         

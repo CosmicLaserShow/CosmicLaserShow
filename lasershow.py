@@ -13,31 +13,35 @@ import hitconverter
 import drivers
 
 
-runtime = 10*SECOND #Run for 10 seconds, nice test
+runtime = 15*SECOND #Run for 10 seconds, nice test
 converter = hitconverter.HitConverter()
 acquisition = drivers.DataAcquisition()
 grid = drivers.LaserGrid()
 
+start = 1557747042
+acquisition.elapsed = start
+
 starting_time = time.time()
 ending_time = starting_time + (runtime / SECOND)
 
-expected_runtime = 1 #1 second
+expected_runtime = 1
 cycle_duration = 0
 run = 0
 while(time.time() < ending_time):
+     acquisition.elapsed += expected_runtime
      converter.reset()
      grid.reset()
      run += 1
      sleeptime = expected_runtime - cycle_duration
-     time.sleep(sleeptime)
+     time.sleep(0.4)
 
      cycle_starttime = time.time() #Benchmark how long it took (roughly, in ms)
      #ALL THE WORK TO BE DONE IN A CYCLE IS DONE HERE
 
-     print("This is run" + str(run))
+     #print("This is run" + str(run))
 
      pulses = acquisition.getPulses() #Check all pulses received from data by now
-     print("Retrieved %d pulses during this run" % len(pulses))
+     #print("Retrieved %d pulses during this run" % len(pulses))
 
      converter.addPulses(pulses)  
      hits = converter.processPulses()

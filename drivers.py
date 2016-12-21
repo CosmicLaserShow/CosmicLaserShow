@@ -17,19 +17,19 @@ class DataAcquisition:
         self.elapsed = 0
         self.pulselist = []
         
-        dbname = os.path.expanduser('~/cosmics.db')
+        dbname = os.path.expanduser('CosmicLaserShow.db')
         self.conn = sqlite3.connect(dbname)
         c = self.conn.cursor()
-        c.execute("SELECT * FROM Hits")
-        for row in c:
-            if row[0] > self.elapsed: self.elapsed = row[0]      
+#        c.execute("SELECT * FROM Hits")
+#        for row in c:
+#           if row[0] > self.elapsed: self.elapsed = row[0]      
 
     def syncDatabase(self):
         c = self.conn.cursor()
-        c.execute("SELECT * FROM Hits WHERE GPSTime>%d" % self.elapsed)
+        c.execute("SELECT * FROM Hits WHERE GPSTime<%d AND ID<%d" % (self.elapsed,2))
         for row in c:
             #print(row)
-            if row[0] > self.elapsed: self.elapsed = row[0]         
+            #if row[0] > self.elapsed: self.elapsed = row[0]         
             newpulse = Pulse(row[2],row[3])
             newpulse.setTimings(row[0],row[1])
             self.pulselist.append(newpulse)
@@ -58,7 +58,9 @@ class LaserGrid:
     def showGrid(self):
         plt.scatter(self.xs,self.ys)
         self.fig.canvas.draw()
-        somegrid = [[0]*10 for _ in range(10)]
+        somegrid = [[0]*11 for _ in range(11)]
+        #print(self.xs)
+        #print(self.ys)
         for i in range(len(self.xs)):
            somegrid[self.ys[i]][self.xs[i]] = 1
         for list in somegrid: print(list)
