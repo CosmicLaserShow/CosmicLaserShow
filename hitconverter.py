@@ -1,46 +1,30 @@
 from globals import *
 from datastructures import *
-import lasershow
-
+from minimizer import *
 
 class HitConverter: 
-    def __init__(self, lasershow):
-        self.steering = lasershow
+    def __init__(self):
         self.stream = []
         self.processed = []	
         self.hits = []
 
-    def processPulses(self, currtime):
-        grace_time = 1 * MS
-        expiration_time = 100 * MS 
+    def reset(self):
+        self.hits = []
 
+    def processPulses(self):
         toProcess = []
-        toDelete = []
-	
         hasIds = [False, False, False, False]
 	
-        for pulse in stream:
-            too_old = pulse.time - currtime > expiration_time
-            if too_old:
-                toDelete.append(pulse)
-                continue	
-
-            mature =  pulse.time - currtime > grace_time
-            if mature: 
-                toProcess.append(pulse)
-                hasIds[pulse.id] = True
+        for pulse in self.stream:
+            toProcess.append(pulse)
+            hasIds[pulse.id] = True
        
-        for pulse in toDelete:
-            #pulse did not hit all 4 phototubes
-            #dont process these. Delete from stream to save computing power
-            stream.remove(pulse)            
- 
         #Can we create a hit from all the pulses we have so far?
         if hasIds == [True,True,True,True]:
-            processed_pulses = __checkForHit(toProcess)
+            processed_pulses = self.__checkForHit(toProcess)
             for pulse in processed_pulses: 
-                stream.remove(pulse) #Once a pulse is used it's no longer needed
-
+                self.stream.remove(pulse) #Once a pulse is used it's no longer needed
+        return self.hits
     def __checkForHit(self, toProcess):
         #Simple but ugly solution implemented (for now):
         #1) Pick the first t0,t1,t2,t3
@@ -64,8 +48,9 @@ class HitConverter:
             
             if successes == [True,True,True,True]:
                 hit = Hit(processed_thisround)
-                HitMinimizer.compute(hit)
-                if __isValid(hit): valid_hits.append(hit)	
+                HitMinimizer(hit)
+                print("x= %1.2f y= %1.2f t= %1.2f chisq=%.2f" % (hit.x,hit.y,hit.time,hit.chiSquared))
+                if self.__isValid(hit): valid_hits.append(hit)	
                 processed_pulses += processed_thisround
                 for pulse in processed_thisround:
                     toProcess.remove(pulse)

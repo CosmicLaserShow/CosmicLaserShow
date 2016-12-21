@@ -21,6 +21,6 @@ while True:
         list_yi.append(yi)
         plt.scatter(list_xi,list_yi)
         fig.canvas.draw()
-        time.sleep(0.01)
+        time.sleep(10.01)
     except KeyboardInterrupt:
         break
