@@ -18,12 +18,10 @@ meas_errs = len(meas_time) * [ fac * 0.1 ]
 meas_puls = [datastructures.Pulse(i,mcdata[i]) for i in range(len(mcdata))]
 meas_hit  = datastructures.Hit(meas_puls)
 
-output = minimizer.HitMinimizer(meas_hit) #, meas_errs, start_hit)
-
-x   = output.x
-cov = output.hess_inv
+minimizer.HitMinimizer(meas_hit) #, meas_errs, start_hit)
 
 print 'fit results:'
-print 'x_start = %.5f; x = %.5f +/- %.5f' % (round(start_hit[0],5),round(x[0],5),round(math.sqrt(cov[0][0]),5))
-print 'y_start = %.5f; y = %.5f +/- %.5f' % (round(start_hit[1],5),round(x[1],5),round(math.sqrt(cov[1][1]),5))
-print 'chisquared = %.1f' % (round(output.fun,5))
+print 'x_start = %.5f; x = %.5f +/- %.5f' % (round(start_hit[0],5),round(meas_hit.x,5),round(meas_hit.x_err,5))
+print 'y_start = %.5f; y = %.5f +/- %.5f' % (round(start_hit[1],5),round(meas_hit.y,5),round(meas_hit.y_err,5))
+print 'chisquared = %.1f' % (round(meas_hit.chiSquared,5))
+print 'average arrival time from fitted point is %.5f +/- %.5f' % (round(meas_hit.time,5),round(meas_hit.time_err,5))

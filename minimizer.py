@@ -24,4 +24,3 @@ def HitMinimizer(hit, hit_errors = None, start_hit = [globals.LENGTH * 0.5, glob
     time = sum([tlist[i].time - numpy.sqrt((vec_hit - align[i]).dot(vec_hit - align[i]))/globals.SPEED for i in range(len(align))])/len(align)
     time_err = numpy.sqrt(sum([(((vec_hit[0] - pmt[0]) * vec_hit_err[0])**2 + ((vec_hit[1] - pmt[1]) * vec_hit_err[1])**2) / (vec_hit - pmt).dot(vec_hit - pmt) for pmt in align])/len(align)/globals.SPEED + sum([err**2 for err in hit_errors])/len(align))
     hit.setCoords(vec_hit[0], vec_hit[1], vec_hit_err[0], vec_hit_err[1], time, time_err, output.fun) 
-    return output
