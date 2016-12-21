@@ -40,6 +40,7 @@ class DataAcquisition:
 class LaserGrid:
     def __init__(self):
         self.fig = plt.figure()
+        plt.show(block=False)
         self.fig.canvas.draw()
         self.xs = []
         self.ys = []
