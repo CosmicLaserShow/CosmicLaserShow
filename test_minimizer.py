@@ -14,8 +14,9 @@ start_hit = [globals.LENGTH/4.0, globals.LENGTH/4.0]
 fac = math.sqrt(2.0) * 0.5 * globals.LENGTH / globals.SPEED
 
 meas_time = [ fac * 1.05, fac * 0.95, fac * 0.9, fac * 1.1] 
-meas_errs = len(meas_time) * [ fac * 0.1 ] 
-meas_hit  = datastructures.Hit(mcdata)
+meas_errs = len(meas_time) * [ fac * 0.1 ]
+meas_puls = [datastructures.Pulse(i,mcdata[i]) for i in range(len(mcdata))]
+meas_hit  = datastructures.Hit(meas_puls)
 
 output = minimizer.HitMinimizer(meas_hit) #, meas_errs, start_hit)
 
