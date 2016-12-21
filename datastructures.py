@@ -1,5 +1,5 @@
 from globals import *
-
+import numpy
 
 class Hit:
     def __init__(self,pulselist_):
@@ -31,3 +31,27 @@ class Light:
         self.x = x_
         self.y = y_
         self.time = time_
+
+class Track:
+    def __init__(self):
+        self.x = numpy.array([0.,0.,0.])
+        self.u = numpy.array([0.,0.,0.])
+        self.x_err = numpy.array([0.,0.,0.])
+        self.u_err = numpy.array([0.,0.,0.])
+        self.chisquared = 0.
+
+    def setPosition(self,x_,y_,z_):
+        self.x = numpy.array([x_,y_,z_])
+    
+    def setPositionError(self,x_err_,y_err_,z_err_):
+        self.x_err = numpy.array([x_err_,y_err_,z_err_])
+
+    def setDirection(self,u_x_,u_y_,u_z_):
+        self.u = numpy.array([])
+
+    def setDirectionErr(self,u_x_err_,u_y_err_,u_z_err_):
+        self.u_err = numpy.array([u_x_err_,u_y_err_,u_z_err_])
+
+    def setChiSquared(self,chisquared_):
+        self.chisquared = chisquared_
+
