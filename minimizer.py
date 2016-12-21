@@ -13,15 +13,15 @@ def chisquared(vars, alignm, data, eps_data = None):
 def HitMinimizer(hit, hit_errors = None, start_hit = [globals.LENGTH * 0.5, globals.LENGTH * 0.5]):
     tlist = hit.pulses
     timelist = [ t.time for t in tlist] 
-    redtimelist = [ t - min(timelist) for t in timelist]
-
+    #redtimelist = [ t - min(timelist) for t in timelist] # NON-ZERO TIME OFFSET NOT YET WORKING FIXME
+    redtimelist = timelist
     r_var_list = [ globals.SPEED * t for t in redtimelist ]
     if not hit_errors:
         hit_errors = len(tlist) * [ 0.5 * globals.NS ]
     r_err_list = [ globals.SPEED * t for t in hit_errors ]
     vars = [start_hit[0], start_hit[1]]
     align = [numpy.array([pmt[0],pmt[1]]) for pmt in globals.PMT_COORDS]
-    output = minimize(chisquared, vars, args=(align, r_var_list, r_err_list))
+    output = minimize(chisquared, vars, args=(align, r_var_list, r_err_list))#, bounds=((0,globals.LENGTH),(0,globals.LENGTH),(0,globals.LENGTH)), method='TNC')
     vec_hit = numpy.array([output.x[0],output.x[1]])
     vec_hit_err = numpy.array([numpy.sqrt(output.hess_inv[0][0]), numpy.sqrt(output.hess_inv[1][1])])
     time = sum([tlist[i].time - numpy.sqrt((vec_hit - align[i]).dot(vec_hit - align[i]))/globals.SPEED for i in range(len(align))])/len(align)
