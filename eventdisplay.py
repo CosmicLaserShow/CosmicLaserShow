@@ -1,7 +1,10 @@
 import numpy 
 import time
-import mc
 from matplotlib import pyplot as plt
+
+import mc
+import minimizer
+import datastructures
 
 fig = plt.figure()
 
@@ -16,9 +19,15 @@ list_yi = []
 # loop to update the data
 while True:
     try:
-        xi, yi = mc.random_coordinate(), mc.random_coordinate()
-        list_xi.append(xi)
-        list_yi.append(yi)
+        # get MC pulses and fit for hit (x,y)
+        mcdata = mc.generate()
+        pulses = [datastructures.Pulse(i,mcdata[i]) for i in range(len(mcdata))]
+        hit = datastructures.Hit(pulses)
+        minimizer.HitMinimizer(hit)
+        # add fitted hit
+        list_xi.append(hit.x)
+        list_yi.append(hit.y)
+        # plot
         plt.scatter(list_xi,list_yi)
         fig.canvas.draw()
         time.sleep(0.01)
